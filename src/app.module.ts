@@ -3,6 +3,7 @@ import { AuthModule } from "./auth/auth.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config/dist/config.module"
 import { BoardModule } from "./board/board.module"
+import { TicketModule } from "./ticket/ticket.module"
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BoardModule } from "./board/board.module"
     }),
     AuthModule,
     BoardModule,
+    TicketModule,
   ],
   controllers: [],
   providers: [],
