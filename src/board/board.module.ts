@@ -6,7 +6,8 @@ import { BoardController } from "./ui/board.controller"
 
 @Module({
   imports: [TypeOrmModule.forFeature([BoardRepository])],
-  providers: [BoardService],
+  providers: [BoardService, BoardRepository],
   controllers: [BoardController],
+  exports: [BoardRepository],
 })
 export class BoardModule {}
