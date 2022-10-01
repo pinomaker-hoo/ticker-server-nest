@@ -2,15 +2,18 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Req,
   Res,
   UseGuards,
 } from "@nestjs/common"
+import { Response } from "express"
 import { ApiResponse } from "src/common/response/reponse.dto"
 import { AuthService } from "../application/auth.service"
 import { User } from "../domain/user.entity"
 import { RequestUserSaveDto } from "../dto/user.request.save.dto"
+import { KakaoGuard } from "../passport/auth.kakao.guard"
 import { LocalGuard } from "../passport/auth.local.guard"
 
 @Controller("auth")
@@ -47,8 +50,20 @@ export class AuthController {
   }
 
   @Get("/kakao")
-  async loginKakaoUser() {}
+  @UseGuards(KakaoGuard)
+  async loginKakaoUser() {
+    return HttpStatus.OK
+  }
 
   @Get("/kakao/callback")
-  async kakaoCallback() {}
+  @UseGuards(KakaoGuard)
+  async kakaoCallback(@Req() req, @Res() res: Response) {
+    const token = await this.authService.kakaoLogin(req.user)
+    res.header("Access-Control-Allow-Origin", "*")
+    res.set("Authorization", "Bearer " + token)
+    res.cookie("accessToken", token, {
+      maxAge: 24 * 60 * 60,
+    })
+    res.redirect("http://localhost:5173")
+  }
 }

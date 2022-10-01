@@ -5,6 +5,7 @@ import { RequestUserSaveDto } from "../dto/user.request.save.dto"
 import { UserRepository } from "../infrastructure/user.repository"
 import * as bcrypt from "bcryptjs"
 import { JwtService } from "@nestjs/jwt"
+import { KakaoDto } from "../dto/user.kakao.dto"
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,32 @@ export class AuthService {
     }
   }
 
+  async kakaoLogin(body: KakaoDto): Promise<string> {
+    try {
+      const findUser = await this.findKakaoUserByKakaoId(body.kakaoId)
+      if (findUser) return this.signJwtWithIdx(findUser.idx)
+      const saveUser = await this.kakaoSave(body)
+      return this.signJwtWithIdx(saveUser.idx)
+    } catch (err) {
+      throw new HttpException("Not Found", HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  /** Kakao Save -> Kakao Login에서 호출 */
+  async kakaoSave(body: KakaoDto): Promise<User> {
+    try {
+      const user = this.userRepository.create({
+        email: body.email,
+        name: body.name,
+        provider: Provider.KAKAO,
+        providerId: body.kakaoId,
+      })
+      return await this.userRepository.save(user)
+    } catch (err) {
+      throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
+    }
+  }
+
   signJwtWithIdx(idx: number): string {
     return this.jwtService.sign({ idx })
   }
@@ -67,5 +94,9 @@ export class AuthService {
   async findUserByEmail(email: string): Promise<boolean> {
     const user: User[] = await this.userRepository.find({ where: { email } })
     return user.length > 0 ? true : false
+  }
+
+  async findKakaoUserByKakaoId(providerId: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { providerId } })
   }
 }
