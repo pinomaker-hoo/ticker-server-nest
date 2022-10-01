@@ -1,6 +1,13 @@
 import { User } from "src/auth/domain/user.entity"
+import { Comment } from "src/comment/domain/comment.entity"
 import { BaseTimeEntity } from "src/common/entity/basetime.entity"
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm"
 
 @Entity({ name: "tbl_board" })
 export class Board extends BaseTimeEntity {
@@ -18,4 +25,7 @@ export class Board extends BaseTimeEntity {
 
   @ManyToOne((type) => User, (user) => user.board)
   user: User
+
+  @OneToMany((type) => Comment, (comment) => comment.board)
+  comment: Comment[]
 }

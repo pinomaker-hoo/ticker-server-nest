@@ -5,6 +5,7 @@ import { ConfigModule } from "@nestjs/config/dist/config.module"
 import { BoardModule } from "./board/board.module"
 import { TicketModule } from "./ticket/ticket.module"
 import { TicketUserModule } from "./ticket-user/ticketUser.module"
+import { CommentModule } from "./comment/comment.module"
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TicketUserModule } from "./ticket-user/ticketUser.module"
     BoardModule,
     TicketModule,
     TicketUserModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],
