@@ -6,5 +6,9 @@ import { AppService } from './app.service';
   imports: [],
   controllers: [AppController],
   providers: [AppService],
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
+    }),
 })
 export class AppModule {}
