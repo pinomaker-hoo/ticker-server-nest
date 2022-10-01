@@ -1,3 +1,5 @@
-import { AuthGuard } from '@nestjs/passport';
+import { Injectable } from "@nestjs/common"
+import { AuthGuard } from "@nestjs/passport"
 
-export class KakaoGuard extends AuthGuard('kakao') {}
+@Injectable()
+export class KakaoGuard extends AuthGuard("kakao") {}
