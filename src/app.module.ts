@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common"
 import { AuthModule } from "./auth/auth.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config/dist/config.module"
+import { BoardModule } from "./board/board.module"
 
 @Module({
   imports: [
-    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
@@ -20,6 +20,8 @@ import { ConfigModule } from "@nestjs/config/dist/config.module"
       entities: ["dist/**/*.entity.js"],
       synchronize: true,
     }),
+    AuthModule,
+    BoardModule,
   ],
   controllers: [],
   providers: [],
