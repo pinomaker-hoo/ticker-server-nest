@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config/dist/config.module"
 import { BoardModule } from "./board/board.module"
 import { TicketModule } from "./ticket/ticket.module"
+import { TicketUserModule } from "./ticket-user/ticketUser.module"
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TicketModule } from "./ticket/ticket.module"
     AuthModule,
     BoardModule,
     TicketModule,
+    TicketUserModule,
   ],
   controllers: [],
   providers: [],

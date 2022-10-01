@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm"
-import { Ticket } from "../domainn/ticket.entity"
+import { Ticket } from "../domain/ticket.entity"
 
 @EntityRepository(Ticket)
 export class TicketRepository extends Repository<Ticket> {}

@@ -1,5 +1,6 @@
 import { Board } from "src/board/domain/board.entity"
 import { BaseTimeEntity } from "src/common/entity/basetime.entity"
+import { TicketUser } from "src/ticket-user/domain/ticketUser.entity"
 import {
   Column,
   Entity,
@@ -38,4 +39,7 @@ export class User extends BaseTimeEntity {
 
   @OneToMany((type) => Board, (board) => board.user)
   board: Board[]
+
+  @OneToMany((type) => TicketUser, (ticketUser) => ticketUser.user)
+  ticketUser: TicketUser[]
 }
