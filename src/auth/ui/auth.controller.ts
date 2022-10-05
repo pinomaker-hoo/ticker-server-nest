@@ -45,6 +45,8 @@ export class AuthController {
     const token = this.authService.signJwtWithIdx(user.idx)
     res.cookie("accessToken", token, {
       maxAge: 24 * 60 * 60,
+      httpOnly: false,
+      sameSite: "None",
     })
     res.send({ user })
   }
