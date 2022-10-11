@@ -20,6 +20,11 @@ import { LocalGuard } from "../passport/auth.local.guard"
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get()
+  async getUserAll() {
+    return await this.authService.getUserAll()
+  }
+
   @Post()
   async saveLocalUser(
     @Body() body: RequestUserSaveDto

@@ -24,4 +24,9 @@ export class TicketUserController {
       statusCode: 200,
     })
   }
+
+  @Get()
+  async getAll() {
+    return await this.ticketUserService.getAll()
+  }
 }

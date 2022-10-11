@@ -32,4 +32,14 @@ export class TicketUserService {
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async getAll() {
+    try {
+      return await this.ticketUserRepository.find({
+        relations: ["user", "ticket"],
+      })
+    } catch (err) {
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
+    }
+  }
 }

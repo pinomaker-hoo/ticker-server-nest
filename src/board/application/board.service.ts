@@ -25,7 +25,7 @@ export class BoardService {
 
   async getBoardList() {
     try {
-      return await this.boardRepository.find()
+      return await this.boardRepository.find({ relations: ["user"] })
     } catch (err) {
       console.log(err)
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)

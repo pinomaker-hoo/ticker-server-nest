@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   UploadedFiles,
@@ -35,5 +36,10 @@ export class BoardController {
       message: "success Save Board",
       statusCode: 200,
     })
+  }
+
+  @Get()
+  async getAll() {
+    return await this.boardService.getBoardList()
   }
 }

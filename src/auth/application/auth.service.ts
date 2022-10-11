@@ -74,6 +74,9 @@ export class AuthService {
       throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
     }
   }
+  async getUserAll() {
+    return await this.userRepository.find()
+  }
 
   signJwtWithIdx(idx: number): string {
     return this.jwtService.sign({ idx })
