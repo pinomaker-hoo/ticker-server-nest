@@ -10,20 +10,20 @@ import { RequestSaveTicketUser } from "../dto/ticketUser.sava.dto"
 export class TicketUserController {
   constructor(private readonly ticketUserService: TicketUserService) {}
 
-  @Post()
-  @UseGuards(JwtGuard)
-  async saveTicketUser(@Body() body: RequestSaveTicketUser, @Req() req) {
-    const { user } = req
-    const ticketUser: TicketUser = await this.ticketUserService.saveTicketUser(
-      body.ticketIdx,
-      user
-    )
-    return ApiResponse.of({
-      data: ticketUser,
-      message: "success Save TicketUser",
-      statusCode: 200,
-    })
-  }
+  // @Post()
+  // @UseGuards(JwtGuard)
+  // async saveTicketUser(@Body() body: RequestSaveTicketUser, @Req() req) {
+  //   const { user } = req
+  //   const ticketUser: TicketUser = await this.ticketUserService.saveTicketUser(
+  //     body.ticketIdx,
+  //     user
+  //   )
+  //   return ApiResponse.of({
+  //     data: ticketUser,
+  //     message: "success Save TicketUser",
+  //     statusCode: 200,
+  //   })
+  // }
 
   @Get()
   async getAll() {

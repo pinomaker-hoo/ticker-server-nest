@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
 import { Ticket } from "../domain/ticket.entity"
+import { TicketKind } from "../dto/ticket.kind.enum"
 import { TicketSaveDto } from "../dto/ticket.save.dto"
 import { TicketRepository } from "../infrastructure/ticket.repository"
 
@@ -9,12 +10,15 @@ export class TicketService {
 
   async saveTicket(body: TicketSaveDto): Promise<Ticket> {
     try {
-      const ticket = this.ticketRepository.create({
+      const kind =
+        body.kind === "korean" ? TicketKind.KOREAN : TicketKind.WESTERN
+      const ticket = await this.ticketRepository.save({
         title: body.title,
-        kind: body.kind,
+        kind: kind,
         price: body.price,
       })
-      return await this.ticketRepository.save(ticket)
+
+      return ticket
     } catch (err) {
       console.log(err)
       throw new HttpException("Bad", HttpStatus.BAD_REQUEST)

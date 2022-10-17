@@ -7,7 +7,7 @@ import { TicketUserRepository } from "./infrastructure/ticketUser.repository"
 import { TicketUserController } from "./ui/ticketUser.controller"
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TicketUserRepository]), TicketModule],
+  imports: [TypeOrmModule.forFeature([TicketUserRepository])],
   providers: [TicketUserService],
   controllers: [TicketUserController],
 })
