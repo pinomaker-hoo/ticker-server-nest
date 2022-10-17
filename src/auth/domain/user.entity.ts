@@ -1,6 +1,7 @@
 import { Board } from "src/board/domain/board.entity"
 import { Comment } from "src/comment/domain/comment.entity"
 import { BaseTimeEntity } from "src/common/entity/basetime.entity"
+import { Point } from "src/point/domain/point.entity"
 import { TicketUser } from "src/ticket-user/domain/ticketUser.entity"
 import {
   Column,
@@ -49,4 +50,7 @@ export class User extends BaseTimeEntity {
 
   @OneToMany((type) => Comment, (comment) => comment.user)
   comment: Comment[]
+
+  @OneToMany((type) => Point, (point) => point.user)
+  point: Point[]
 }

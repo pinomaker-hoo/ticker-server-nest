@@ -1,4 +1,5 @@
 import {
+  Bind,
   Body,
   ConsoleLogger,
   Controller,
@@ -7,11 +8,12 @@ import {
   Post,
   Req,
   Res,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common"
-import { FilesInterceptor } from "@nestjs/platform-express"
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express"
 import { Response } from "express"
 import { ApiResponse } from "src/common/response/reponse.dto"
 import { multerDiskOptions } from "src/utils/multerOptions"
@@ -31,31 +33,28 @@ export class AuthController {
   }
 
   @Post()
-  @UseInterceptors(FilesInterceptor("files", null, multerDiskOptions))
-  async saveLocalUser(
-    @Body() body: RequestUserSaveDto,
-    @UploadedFiles() files: any
-  ): Promise<ApiResponse<User>> {
-    console.log(body, files)
-    const { path } = files[0]
-    const user: User = await this.authService.localUserSave(body, path)
-    if (!user)
-      return ApiResponse.of({
-        data: user,
-        message: "Failed Save User",
-        statusCode: 400,
-      })
-    return ApiResponse.of({
-      data: user,
-      message: "success Save User",
-      statusCode: 200,
-    })
+  //  Promise<ApiResponse<User>>
+  // @UseInterceptors(FileInterceptor("photo", multerDiskOptions))
+  async saveLocalUser(@Req() req, @UploadedFile() file: any) {
+    // const { path } = file[0]
+    console.log("file", req)
+    // const user: User = await this.authService.localUserSave(body, path)
+    // if (!user)
+    //   return ApiResponse.of({
+    //     data: user,
+    //     message: "Failed Save User",
+    //     statusCode: 400,
+    //   })
+    // return ApiResponse.of({
+    //   data: user,
+    //   message: "success Save User",
+    //   statusCode: 200,
+    // })
   }
 
   @Post("/local")
   @UseGuards(LocalGuard)
   async loginLocalUser(@Req() req, @Res() res) {
-    console.log(1)
     const { user } = req
     const token = this.authService.signJwtWithIdx(user.idx)
     res.send({ user, token })

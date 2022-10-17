@@ -17,7 +17,6 @@ export class TicketService {
         kind: kind,
         price: body.price,
       })
-
       return ticket
     } catch (err) {
       console.log(err)

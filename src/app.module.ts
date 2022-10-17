@@ -6,6 +6,7 @@ import { BoardModule } from "./board/board.module"
 import { TicketModule } from "./ticket/ticket.module"
 import { TicketUserModule } from "./ticket-user/ticketUser.module"
 import { CommentModule } from "./comment/comment.module"
+import { PointModule } from "./point/point.module"
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CommentModule } from "./comment/comment.module"
     TicketModule,
     TicketUserModule,
     CommentModule,
+    PointModule,
   ],
   controllers: [],
   providers: [],

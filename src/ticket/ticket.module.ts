@@ -7,7 +7,6 @@ import { TickController } from "./ui/ticket.controller"
 @Module({
   imports: [TypeOrmModule.forFeature([TicketRepository])],
   providers: [TicketService],
-
   controllers: [TickController],
 })
 export class TicketModule {}
