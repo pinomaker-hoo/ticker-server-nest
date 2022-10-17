@@ -7,6 +7,7 @@ import { PointController } from "./ui/point.controller"
 @Module({
   imports: [TypeOrmModule.forFeature([PointRepository])],
   providers: [PointService],
+  exports: [PointService],
   controllers: [PointController],
 })
 export class PointModule {}

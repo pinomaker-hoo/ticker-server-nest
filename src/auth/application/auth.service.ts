@@ -6,13 +6,14 @@ import { UserRepository } from "../infrastructure/user.repository"
 import * as bcrypt from "bcryptjs"
 import { JwtService } from "@nestjs/jwt"
 import { KakaoDto } from "../dto/user.kakao.dto"
-import path from "path"
+import { PointService } from "src/point/application/point.service"
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly pointService: PointService
   ) {}
   async localUserSave(body: RequestUserSaveDto, path: string) {
     try {
@@ -29,7 +30,9 @@ export class AuthService {
         provider: Provider.LOCAL,
         image: path,
       })
-      return await this.userRepository.save(user)
+      await this.userRepository.save(user)
+      await this.pointService.savePoint(user)
+      return user
     } catch (err) {
       console.log(err)
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
