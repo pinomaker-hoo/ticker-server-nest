@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
 import { User } from "src/auth/domain/user.entity"
 import { Board } from "../domain/board.entity"
+import { BoardKind } from "../dto/board.kind.enum"
 import { RequestBoardSaveDto } from "../dto/board.request.save.dto"
 import { BoardRepository } from "../infrastructure/board.repository"
 
@@ -15,6 +16,7 @@ export class BoardService {
         text: body.text,
         user,
         imgPath,
+        boardKind: body.kind,
       })
       return await this.boardRepository.save(board)
     } catch (err) {
@@ -25,7 +27,7 @@ export class BoardService {
 
   async getBoardList() {
     try {
-      return await this.boardRepository.find({ relations: ["user"] })
+      return await this.boardRepository.find({ relations: ["user", "comment"] })
     } catch (err) {
       console.log(err)
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
@@ -34,7 +36,34 @@ export class BoardService {
 
   async getBoard(idx: number) {
     try {
-      return await this.boardRepository.findOne({ where: { idx } })
+      return await this.boardRepository.findOne({
+        where: { idx },
+        relations: ["user", "comment"],
+      })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async getFreeBoardList() {
+    try {
+      return await this.boardRepository.find({
+        where: { boardKind: BoardKind.FREE },
+        relations: ["user", "comment"],
+      })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async getFoodBoardList() {
+    try {
+      return await this.boardRepository.find({
+        where: { boardKind: BoardKind.FOOD },
+        relations: ["user", "comment"],
+      })
     } catch (err) {
       console.log(err)
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
