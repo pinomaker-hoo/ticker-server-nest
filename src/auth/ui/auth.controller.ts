@@ -1,15 +1,20 @@
 import {
   Body,
+  ConsoleLogger,
   Controller,
   Get,
   HttpStatus,
   Post,
   Req,
   Res,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common"
+import { FilesInterceptor } from "@nestjs/platform-express"
 import { Response } from "express"
 import { ApiResponse } from "src/common/response/reponse.dto"
+import { multerDiskOptions } from "src/utils/multerOptions"
 import { AuthService } from "../application/auth.service"
 import { User } from "../domain/user.entity"
 import { RequestUserSaveDto } from "../dto/user.request.save.dto"
@@ -26,10 +31,14 @@ export class AuthController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor("files", null, multerDiskOptions))
   async saveLocalUser(
-    @Body() body: RequestUserSaveDto
+    @Body() body: RequestUserSaveDto,
+    @UploadedFiles() files: any
   ): Promise<ApiResponse<User>> {
-    const user: User = await this.authService.localUserSave(body)
+    console.log(body, files)
+    const { path } = files[0]
+    const user: User = await this.authService.localUserSave(body, path)
     if (!user)
       return ApiResponse.of({
         data: user,
@@ -46,14 +55,10 @@ export class AuthController {
   @Post("/local")
   @UseGuards(LocalGuard)
   async loginLocalUser(@Req() req, @Res() res) {
+    console.log(1)
     const { user } = req
     const token = this.authService.signJwtWithIdx(user.idx)
-    res.cookie("accessToken", token, {
-      maxAge: 24 * 60 * 60,
-      httpOnly: false,
-      sameSite: "None",
-    })
-    res.send({ user })
+    res.send({ user, token })
   }
 
   @Get("/kakao")

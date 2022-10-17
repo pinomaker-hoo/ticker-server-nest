@@ -6,6 +6,7 @@ import { UserRepository } from "../infrastructure/user.repository"
 import * as bcrypt from "bcryptjs"
 import { JwtService } from "@nestjs/jwt"
 import { KakaoDto } from "../dto/user.kakao.dto"
+import path from "path"
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService
   ) {}
-  async localUserSave(body: RequestUserSaveDto) {
+  async localUserSave(body: RequestUserSaveDto, path: string) {
     try {
       const checkEmail = await this.findUserByEmail(body.email)
       if (checkEmail)
@@ -26,6 +27,7 @@ export class AuthService {
         birth: new Date(),
         male: body.male,
         provider: Provider.LOCAL,
+        image: path,
       })
       return await this.userRepository.save(user)
     } catch (err) {
