@@ -33,6 +33,22 @@ export class TicketUserService {
     }
   }
 
+  async findTicketUserList(user: User) {
+    try {
+      return await this.ticketUserRepository.find({ where: { user } })
+    } catch (err) {
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async findTicketUser(idx: number) {
+    try {
+      return await this.ticketUserRepository.findOne({ where: { idx } })
+    } catch (error) {
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
+    }
+  }
+
   async getAll() {
     try {
       return await this.ticketUserRepository.find({
