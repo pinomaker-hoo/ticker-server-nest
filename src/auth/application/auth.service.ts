@@ -28,7 +28,6 @@ export class AuthService {
         birth: new Date(),
         male: body.male,
         provider: Provider.LOCAL,
-        image: path,
       })
       await this.userRepository.save(user)
       await this.pointService.savePoint(user)
@@ -39,10 +38,21 @@ export class AuthService {
     }
   }
 
+  async updatePass(user: User, pass: string) {
+    try {
+      console.log(user, pass)
+      user.pass = pass
+      return await this.userRepository.update(user.idx, { pass })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async localLogin(email: string, password: string): Promise<User> {
     try {
       const findUser: User = await this.userRepository.findOne({
         where: { email },
+        relations: ["point"],
       })
       const compareResult: boolean = await this.compareHash(
         password,
@@ -88,7 +98,10 @@ export class AuthService {
   }
 
   async getById(idx: number): Promise<User> {
-    return await this.userRepository.findOne({ where: { idx } })
+    return await this.userRepository.findOne({
+      where: { idx },
+      relations: ["point"],
+    })
   }
 
   async hashPassword(password: string): Promise<string> {

@@ -5,6 +5,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Patch,
   Post,
   Req,
   Res,
@@ -20,6 +21,7 @@ import { multerDiskOptions } from "src/utils/multerOptions"
 import { AuthService } from "../application/auth.service"
 import { User } from "../domain/user.entity"
 import { RequestUserSaveDto } from "../dto/user.request.save.dto"
+import { JwtGuard } from "../passport/auth.jwt.guard"
 import { KakaoGuard } from "../passport/auth.kakao.guard"
 import { LocalGuard } from "../passport/auth.local.guard"
 
@@ -32,24 +34,41 @@ export class AuthController {
     return await this.authService.getUserAll()
   }
 
+  @Get("/user")
+  @UseGuards(JwtGuard)
+  async findUser(@Req() req) {
+    const { user } = req
+    console.log(user)
+    return user
+  }
+
+  @Patch()
+  @UseGuards(JwtGuard)
+  async updatePass(@Body() body, @Req() req) {
+    return await this.authService.updatePass(req.user, body.pass)
+  }
+
   @Post()
   //  Promise<ApiResponse<User>>
-  // @UseInterceptors(FileInterceptor("photo", multerDiskOptions))
-  async saveLocalUser(@Req() req, @UploadedFile() file: any) {
-    // const { path } = file[0]
-    console.log("file", req)
-    // const user: User = await this.authService.localUserSave(body, path)
-    // if (!user)
-    //   return ApiResponse.of({
-    //     data: user,
-    //     message: "Failed Save User",
-    //     statusCode: 400,
-    //   })
-    // return ApiResponse.of({
-    //   data: user,
-    //   message: "success Save User",
-    //   statusCode: 200,
-    // })
+  // @UseInterceptors(FilesInterceptor("photo", null, multerDiskOptions))
+  async saveLocalUser(
+    @Req() req,
+    @Body() body: RequestUserSaveDto,
+    @UploadedFiles() file: any
+  ) {
+    console.log(body)
+    const user: User = await this.authService.localUserSave(body, "")
+    if (!user)
+      return ApiResponse.of({
+        data: user,
+        message: "Failed Save User",
+        statusCode: 400,
+      })
+    return ApiResponse.of({
+      data: user,
+      message: "success Save User",
+      statusCode: 200,
+    })
   }
 
   @Post("/local")
@@ -57,6 +76,7 @@ export class AuthController {
   async loginLocalUser(@Req() req, @Res() res) {
     const { user } = req
     const token = this.authService.signJwtWithIdx(user.idx)
+    console.log(user)
     res.send({ user, token })
   }
 

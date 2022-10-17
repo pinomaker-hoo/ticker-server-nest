@@ -33,8 +33,11 @@ export class User extends BaseTimeEntity {
   @Column({ type: "boolean", name: "user_male" })
   male: boolean
 
-  @Column({ type: "varchar", name: "user_image" })
+  @Column({ type: "varchar", name: "user_image", nullable: true })
   image: string
+
+  @Column({ type: "varchar", name: "user_pass", nullable: true })
+  pass: string
 
   @Column({ type: "enum", enum: Provider, name: "user_provider" })
   provider: Provider

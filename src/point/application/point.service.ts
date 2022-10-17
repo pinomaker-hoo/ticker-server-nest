@@ -9,11 +9,12 @@ export class PointService {
 
   async updatePoint(user: User, money: number) {
     try {
+      console.log(user)
       const point: Point = await this.pointRepository.findOne({
         where: { user },
       })
-      point.money += money
-      return await this.pointRepository.update(user, { money: point.money })
+      const saveMoney = point.money + money
+      return await this.pointRepository.update(point.idx, { money: saveMoney })
     } catch (err) {
       console.log(err)
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST)
@@ -35,7 +36,8 @@ export class PointService {
 
   async savePoint(user: User) {
     try {
-      return await this.pointRepository.findOne({ where: { user } })
+      const point = this.pointRepository.create({ user, money: 0 })
+      return await this.pointRepository.save(point)
     } catch (err) {
       console.log(err)
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST)

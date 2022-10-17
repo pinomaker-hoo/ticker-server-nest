@@ -32,4 +32,8 @@ export class TicketService {
       throw new HttpException("Bad", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async findTicket(idx: number) {
+    return await this.ticketRepository.findOne({ where: { idx } })
+  }
 }

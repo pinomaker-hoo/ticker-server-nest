@@ -6,6 +6,7 @@ import getRandomNumber from "./getRandomNumber"
 
 export const multerDiskOptions = {
   fileFilter: (request, file, callback) => {
+    console.log(file)
     if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
       callback(null, true)
     } else {
