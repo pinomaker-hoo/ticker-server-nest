@@ -22,15 +22,15 @@ export class BoardController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @UseInterceptors(FilesInterceptor("files", null, multerDiskOptions))
+  // @UseInterceptors(FilesInterceptor("files", null, multerDiskOptions))
   async saveBoard(
     @UploadedFiles() files,
     @Body() body: RequestBoardSaveDto,
     @Req() req
   ) {
-    const { path } = files[0]
+    // const { path } = files[0]
     const { user } = req
-    const board: Board = await this.boardService.saveBoard(body, user, path)
+    const board: Board = await this.boardService.saveBoard(body, user, "null")
     return ApiResponse.of({
       data: board,
       message: "success Save Board",

@@ -32,7 +32,10 @@ export class CommentService {
   async getCommentList(boardIdx: number): Promise<Comment[]> {
     try {
       const board = await this.boardService.getBoard(boardIdx)
-      return await this.commentRepository.find({ where: { board } })
+      return await this.commentRepository.find({
+        where: { board },
+        relations: ["user"],
+      })
     } catch (err) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST)
     }

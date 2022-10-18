@@ -11,13 +11,14 @@ export class BoardService {
 
   async saveBoard(body: RequestBoardSaveDto, user: User, imgPath: string) {
     try {
-      const board: Board = await this.boardRepository.create({
+      const kind = body.kind ? BoardKind.FREE : BoardKind.FOOD
+      const board: Board = this.boardRepository.create({
         title: body.title,
         text: body.text,
         user,
-        imgPath,
-        boardKind: body.kind,
+        boardKind: kind,
       })
+      console.log(board)
       return await this.boardRepository.save(board)
     } catch (err) {
       console.log(err)

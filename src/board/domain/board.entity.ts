@@ -21,7 +21,7 @@ export class Board extends BaseTimeEntity {
   @Column()
   text: string
 
-  @Column()
+  @Column({ type: "varchar", nullable: true })
   imgPath: string
 
   @Column({ type: "enum", enum: BoardKind })
