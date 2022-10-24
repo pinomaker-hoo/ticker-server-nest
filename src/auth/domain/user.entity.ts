@@ -27,10 +27,10 @@ export class User extends BaseTimeEntity {
   @Column({ type: "varchar", name: "user_password", nullable: true })
   password: string
 
-  @Column({ type: "date", name: "user_birth" })
+  @Column({ type: "date", name: "user_birth", nullable: true })
   birth: Date
 
-  @Column({ type: "boolean", name: "user_male" })
+  @Column({ type: "boolean", name: "user_male", nullable: true })
   male: boolean
 
   @Column({ type: "varchar", name: "user_image", nullable: true })

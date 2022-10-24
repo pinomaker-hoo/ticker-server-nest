@@ -5,7 +5,7 @@ import { RequestUserSaveDto } from "../dto/user.request.save.dto"
 import { UserRepository } from "../infrastructure/user.repository"
 import * as bcrypt from "bcryptjs"
 import { JwtService } from "@nestjs/jwt"
-import { KakaoDto } from "../dto/user.kakao.dto"
+import { NaverDto } from "../dto/user.naver.dto"
 import { PointService } from "src/point/application/point.service"
 
 @Injectable()
@@ -15,7 +15,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly pointService: PointService
   ) {}
-  async localUserSave(body: RequestUserSaveDto, path: string) {
+
+  async localUserSave(body: RequestUserSaveDto) {
     try {
       const checkEmail = await this.findUserByEmail(body.email)
       if (checkEmail)
@@ -64,31 +65,40 @@ export class AuthService {
     }
   }
 
-  async kakaoLogin(body: KakaoDto): Promise<string> {
+  async naverLogin(body: NaverDto) {
     try {
-      const findUser = await this.findKakaoUserByKakaoId(body.kakaoId)
-      if (findUser) return this.signJwtWithIdx(findUser.idx)
-      const saveUser = await this.kakaoSave(body)
-      return this.signJwtWithIdx(saveUser.idx)
+      const findUser = await this.findKakaoUserByKakaoId(body.naverId)
+      if (findUser) {
+        const token = this.signJwtWithIdx(findUser.idx)
+        return { token, findUser }
+      }
+      const saveUser = await this.naverSave(body)
+      const token = this.signJwtWithIdx(saveUser.idx)
+      return { token, saveUser }
     } catch (err) {
       throw new HttpException("Not Found", HttpStatus.BAD_REQUEST)
     }
   }
 
-  /** Kakao Save -> Kakao Login에서 호출 */
-  async kakaoSave(body: KakaoDto): Promise<User> {
+  /** naver Save -> Kakao Login에서 호출 */
+  async naverSave(body: NaverDto): Promise<User> {
     try {
       const user = this.userRepository.create({
         email: body.email,
         name: body.name,
-        provider: Provider.KAKAO,
-        providerId: body.kakaoId,
+        provider: Provider.NAVER,
+        providerId: body.naverId,
       })
       return await this.userRepository.save(user)
     } catch (err) {
       throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async findKakaoUserByKakaoId(providerId: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { providerId } })
+  }
+
   async getUserAll() {
     return await this.userRepository.find()
   }
@@ -115,9 +125,5 @@ export class AuthService {
   async findUserByEmail(email: string): Promise<boolean> {
     const user: User[] = await this.userRepository.find({ where: { email } })
     return user.length > 0 ? true : false
-  }
-
-  async findKakaoUserByKakaoId(providerId: string): Promise<User> {
-    return await this.userRepository.findOne({ where: { providerId } })
   }
 }

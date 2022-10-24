@@ -1,4 +1,4 @@
 export enum Provider {
   LOCAL,
-  KAKAO,
+  NAVER,
 }

@@ -6,7 +6,6 @@ import { PointModule } from "src/point/point.module"
 import { AuthService } from "./application/auth.service"
 import { UserRepository } from "./infrastructure/user.repository"
 import { JwtStrategy } from "./passport/auth.jwt.strategy"
-import { KakaoStrategy } from "./passport/auth.kakao.strateyg"
 import { LocalStrategy } from "./passport/auth.local.stratehgy"
 import { AuthController } from "./ui/auth.controller"
 
@@ -25,7 +24,7 @@ import { AuthController } from "./ui/auth.controller"
     }),
     PointModule,
   ],
-  providers: [AuthService, LocalStrategy, KakaoStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

@@ -1,28 +1,19 @@
 import {
-  Bind,
   Body,
-  ConsoleLogger,
   Controller,
   Get,
-  HttpStatus,
   Patch,
   Post,
   Req,
   Res,
-  UploadedFile,
-  UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from "@nestjs/common"
-import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express"
-import { Response } from "express"
 import { ApiResponse } from "src/common/response/reponse.dto"
-import { multerDiskOptions } from "src/utils/multerOptions"
 import { AuthService } from "../application/auth.service"
 import { User } from "../domain/user.entity"
+import { NaverDto } from "../dto/user.naver.dto"
 import { RequestUserSaveDto } from "../dto/user.request.save.dto"
 import { JwtGuard } from "../passport/auth.jwt.guard"
-import { KakaoGuard } from "../passport/auth.kakao.guard"
 import { LocalGuard } from "../passport/auth.local.guard"
 
 @Controller("auth")
@@ -49,15 +40,8 @@ export class AuthController {
   }
 
   @Post()
-  //  Promise<ApiResponse<User>>
-  // @UseInterceptors(FilesInterceptor("photo", null, multerDiskOptions))
-  async saveLocalUser(
-    @Req() req,
-    @Body() body: RequestUserSaveDto,
-    @UploadedFiles() file: any
-  ) {
-    console.log(body)
-    const user: User = await this.authService.localUserSave(body, "")
+  async saveLocalUser(@Req() req, @Body() body: RequestUserSaveDto) {
+    const user: User = await this.authService.localUserSave(body)
     if (!user)
       return ApiResponse.of({
         data: user,
@@ -80,21 +64,8 @@ export class AuthController {
     res.send({ user, token })
   }
 
-  @Get("/kakao")
-  @UseGuards(KakaoGuard)
-  async loginKakaoUser() {
-    return HttpStatus.OK
-  }
-
-  @Get("/kakao/callback")
-  @UseGuards(KakaoGuard)
-  async kakaoCallback(@Req() req, @Res() res: Response) {
-    const token = await this.authService.kakaoLogin(req.user)
-    res.header("Access-Control-Allow-Origin", "*")
-    res.set("Authorization", "Bearer " + token)
-    res.cookie("accessToken", token, {
-      maxAge: 24 * 60 * 60,
-    })
-    res.redirect("http://localhost:5173")
+  @Post("/naver")
+  async loginNaverUser(@Body() body: NaverDto) {
+    return await this.authService.naverLogin(body)
   }
 }
