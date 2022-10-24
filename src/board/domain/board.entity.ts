@@ -8,7 +8,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { BoardKind } from "../dto/board.kind.enum"
 
 @Entity({ name: "tbl_board" })
 export class Board extends BaseTimeEntity {
@@ -23,9 +22,6 @@ export class Board extends BaseTimeEntity {
 
   @Column({ type: "varchar", nullable: true })
   imgPath: string
-
-  @Column({ type: "enum", enum: BoardKind })
-  boardKind: BoardKind
 
   @ManyToOne((type) => User, (user) => user.board)
   user: User

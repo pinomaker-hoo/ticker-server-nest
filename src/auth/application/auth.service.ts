@@ -74,6 +74,7 @@ export class AuthService {
       }
       const saveUser = await this.naverSave(body)
       const token = this.signJwtWithIdx(saveUser.idx)
+      await this.pointService.savePoint(saveUser)
       return { token, user: saveUser }
     } catch (err) {
       throw new HttpException("Not Found", HttpStatus.BAD_REQUEST)
