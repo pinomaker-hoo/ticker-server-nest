@@ -70,11 +70,11 @@ export class AuthService {
       const findUser = await this.findKakaoUserByKakaoId(body.naverId)
       if (findUser) {
         const token = this.signJwtWithIdx(findUser.idx)
-        return { token, findUser }
+        return { token, user: findUser }
       }
       const saveUser = await this.naverSave(body)
       const token = this.signJwtWithIdx(saveUser.idx)
-      return { token, saveUser }
+      return { token, user: saveUser }
     } catch (err) {
       throw new HttpException("Not Found", HttpStatus.BAD_REQUEST)
     }
