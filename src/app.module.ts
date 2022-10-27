@@ -7,6 +7,8 @@ import { TicketModule } from "./ticket/ticket.module"
 import { TicketUserModule } from "./ticket-user/ticketUser.module"
 import { CommentModule } from "./comment/comment.module"
 import { PointModule } from "./point/point.module"
+import { ServeStaticModule } from "@nestjs/serve-static"
+import { join } from "path"
 
 @Module({
   imports: [
@@ -30,6 +32,9 @@ import { PointModule } from "./point/point.module"
     TicketUserModule,
     CommentModule,
     PointModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "./source"),
+    }),
   ],
   controllers: [],
   providers: [],
