@@ -154,6 +154,22 @@ export class AuthService {
   async decodeBase(image: string, fileName: string, ext: string) {
     return await decode(image, { fname: fileName, ext: ext })
   }
+
+  async initPassword(email: string) {
+    try {
+      const user: User = await this.userRepository.findOne({ where: { email } })
+      const password: string = String(await this.getNumber())
+      const updateUser = await this.userRepository.update(user.idx, {
+        password,
+      })
+      await this.sendMail(email, password)
+      return updateUser
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
+    }
+  }
+
   async sendMail(email: string, number: string) {
     try {
       await this.mailerService.sendMail({

@@ -68,4 +68,9 @@ export class AuthController {
   async loginNaverUser(@Body() body: NaverDto) {
     return await this.authService.naverLogin(body)
   }
+
+  @Post("/password")
+  async initPassword(@Body() body) {
+    return await this.authService.initPassword(body.email)
+  }
 }
