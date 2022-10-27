@@ -73,4 +73,10 @@ export class AuthController {
   async initPassword(@Body() body) {
     return await this.authService.initPassword(body.email)
   }
+
+  @Patch("/password")
+  @UseGuards(JwtGuard)
+  async changePassword(@Req() req, @Body() body) {
+    return await this.authService.updatePassword(req.user, body.password)
+  }
 }

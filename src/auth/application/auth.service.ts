@@ -182,4 +182,13 @@ export class AuthService {
       console.log(err)
     }
   }
+
+  async updatePassword(user: User, password: string) {
+    try {
+      return await this.userRepository.update(user.idx, { password })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
+    }
+  }
 }
