@@ -192,4 +192,13 @@ export class AuthService {
       throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async deleteUser(user: User) {
+    try {
+      return await this.userRepository.delete(user.idx)
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
+    }
+  }
 }

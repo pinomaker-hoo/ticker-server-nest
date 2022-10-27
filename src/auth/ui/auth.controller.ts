@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -78,5 +79,11 @@ export class AuthController {
   @UseGuards(JwtGuard)
   async changePassword(@Req() req, @Body() body) {
     return await this.authService.updatePassword(req.user, body.password)
+  }
+
+  @Delete()
+  @UseGuards()
+  async deleteUser(@Req() req) {
+    return await this.authService.deleteUser(req.user)
   }
 }
