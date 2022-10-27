@@ -23,7 +23,6 @@ export class AuthService {
   async localUserSave(body: RequestUserSaveDto) {
     try {
       const path = await this.baseToImg(body.base)
-
       const checkEmail = await this.findUserByEmail(body.email)
       if (checkEmail)
         throw new HttpException("이미 존재 하는 계정", HttpStatus.BAD_REQUEST)
@@ -159,8 +158,9 @@ export class AuthService {
     try {
       const user: User = await this.userRepository.findOne({ where: { email } })
       const password: string = String(await this.getNumber())
+      const hash: string = await this.hashPassword(password)
       const updateUser = await this.userRepository.update(user.idx, {
-        password,
+        password: hash,
       })
       await this.sendMail(email, password)
       return updateUser
@@ -185,7 +185,8 @@ export class AuthService {
 
   async updatePassword(user: User, password: string) {
     try {
-      return await this.userRepository.update(user.idx, { password })
+      const hash: string = await this.hashPassword(password)
+      return await this.userRepository.update(user.idx, { password: hash })
     } catch (err) {
       console.log(err)
       throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
