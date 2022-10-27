@@ -1,3 +1,4 @@
+import { MailerModule } from "@nestjs-modules/mailer"
 import { Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { JwtModule } from "@nestjs/jwt"
@@ -7,7 +8,9 @@ import { AuthService } from "./application/auth.service"
 import { UserRepository } from "./infrastructure/user.repository"
 import { JwtStrategy } from "./passport/auth.jwt.strategy"
 import { LocalStrategy } from "./passport/auth.local.stratehgy"
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter"
 import { AuthController } from "./ui/auth.controller"
+import { male } from "src/config/env/node"
 
 @Module({
   imports: [
@@ -21,6 +24,24 @@ import { AuthController } from "./ui/auth.controller"
           expiresIn: configService.get("JWT_EXPIRESIN"),
         },
       }),
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: male.MALE_HOST,
+        port: male.MALE_PORT,
+        auth: {
+          user: male.MALE_ID,
+          pass: male.GOOGLE_KEY,
+        },
+        secure: true,
+      },
+      template: {
+        dir: process.cwd() + "/template/",
+        adapter: new HandlebarsAdapter(), // or new PugAdapter()
+        options: {
+          strict: true,
+        },
+      },
     }),
     PointModule,
   ],

@@ -8,13 +8,16 @@ import { decode } from "node-base64-image"
 import { JwtService } from "@nestjs/jwt"
 import { NaverDto } from "../dto/user.naver.dto"
 import { PointService } from "src/point/application/point.service"
+import { MailerService } from "@nestjs-modules/mailer"
+import { male } from "src/config/env/node"
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
-    private readonly pointService: PointService
+    private readonly pointService: PointService,
+    private readonly mailerService: MailerService
   ) {}
 
   async localUserSave(body: RequestUserSaveDto) {
@@ -150,5 +153,17 @@ export class AuthService {
 
   async decodeBase(image: string, fileName: string, ext: string) {
     return await decode(image, { fname: fileName, ext: ext })
+  }
+  async sendMail(email: string, number: string) {
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        from: male.MALE_ID,
+        subject: "[Dongyang Order] 임시 비밀번호 발급",
+        html: "임시 비밀번호 : " + `<b> ${number}</b>`,
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
