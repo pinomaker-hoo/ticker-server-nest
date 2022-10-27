@@ -4,4 +4,5 @@ export class RequestUserSaveDto {
   name: string
   birth: Date
   male: boolean
+  base: string
 }

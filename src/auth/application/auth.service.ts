@@ -4,6 +4,7 @@ import { Provider } from "../dto/user.provider.enum"
 import { RequestUserSaveDto } from "../dto/user.request.save.dto"
 import { UserRepository } from "../infrastructure/user.repository"
 import * as bcrypt from "bcryptjs"
+import { decode } from "node-base64-image"
 import { JwtService } from "@nestjs/jwt"
 import { NaverDto } from "../dto/user.naver.dto"
 import { PointService } from "src/point/application/point.service"
@@ -18,6 +19,8 @@ export class AuthService {
 
   async localUserSave(body: RequestUserSaveDto) {
     try {
+      const path = await this.baseToImg(body.base)
+
       const checkEmail = await this.findUserByEmail(body.email)
       if (checkEmail)
         throw new HttpException("이미 존재 하는 계정", HttpStatus.BAD_REQUEST)
@@ -28,6 +31,7 @@ export class AuthService {
         name: body.name,
         birth: new Date(),
         male: body.male,
+        image: path,
         provider: Provider.LOCAL,
       })
       await this.userRepository.save(user)
@@ -126,5 +130,25 @@ export class AuthService {
   async findUserByEmail(email: string): Promise<boolean> {
     const user: User[] = await this.userRepository.find({ where: { email } })
     return user.length > 0 ? true : false
+  }
+
+  async baseToImg(encode: string) {
+    try {
+      const path: string = `./src/source/img/base/${await this.getNumber()}-${Date.now()}`
+      const image = await this.decodeBase(encode, path, "jpg")
+      return path
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getNumber() {
+    let number = Math.floor(Math.random() * 1000000) + 100000
+    if (number > 1000000) number -= 100000
+    return number
+  }
+
+  async decodeBase(image: string, fileName: string, ext: string) {
+    return await decode(image, { fname: fileName, ext: ext })
   }
 }
