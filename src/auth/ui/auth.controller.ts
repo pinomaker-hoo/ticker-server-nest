@@ -82,7 +82,7 @@ export class AuthController {
   }
 
   @Delete()
-  @UseGuards()
+  @UseGuards(JwtGuard)
   async deleteUser(@Req() req) {
     return await this.authService.deleteUser(req.user)
   }
