@@ -23,7 +23,9 @@ export class Board extends BaseTimeEntity {
   @Column({ type: "varchar", nullable: true })
   imgPath: string
 
-  @ManyToOne((type) => User, (user) => user.board)
+  @ManyToOne((type) => User, (user) => user.board, {
+    onDelete: "CASCADE",
+  })
   user: User
 
   @OneToMany((type) => Comment, (comment) => comment.board)

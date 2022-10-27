@@ -9,6 +9,8 @@ export class Point {
   @Column()
   money: number
 
-  @ManyToOne((type) => User, (user) => user.point)
+  @ManyToOne((type) => User, (user) => user.point, {
+    onDelete: "CASCADE",
+  })
   user: User
 }

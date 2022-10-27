@@ -11,9 +11,13 @@ export class TicketUser extends BaseTimeEntity {
   @Column({ type: "boolean" })
   used: boolean
 
-  @ManyToOne((type) => User, (user) => user.ticketUser)
+  @ManyToOne((type) => User, (user) => user.ticketUser, {
+    onDelete: "CASCADE",
+  })
   user: User
 
-  @ManyToOne((type) => Ticket, (ticket) => ticket.ticketUser)
+  @ManyToOne((type) => Ticket, (ticket) => ticket.ticketUser, {
+    onDelete: "CASCADE",
+  })
   ticket: Ticket
 }

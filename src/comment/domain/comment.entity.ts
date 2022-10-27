@@ -11,9 +11,13 @@ export class Comment extends BaseTimeEntity {
   @Column()
   text: string
 
-  @ManyToOne((type) => User, (user) => user.comment)
+  @ManyToOne((type) => User, (user) => user.comment, {
+    onDelete: "CASCADE",
+  })
   user: User
 
-  @ManyToOne((type) => Board, (board) => board.comment)
+  @ManyToOne((type) => Board, (board) => board.comment, {
+    onDelete: "CASCADE",
+  })
   board: Board
 }
