@@ -201,4 +201,14 @@ export class AuthService {
       throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async updateImage(user: User, base: string) {
+    try {
+      const path = await this.baseToImg(base)
+      return await this.userRepository.update(user.idx, { image: path })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("Not Found!!", HttpStatus.BAD_REQUEST)
+    }
+  }
 }

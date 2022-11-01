@@ -86,4 +86,10 @@ export class AuthController {
   async deleteUser(@Req() req) {
     return await this.authService.deleteUser(req.user)
   }
+
+  @Patch("/image")
+  @UseGuards(JwtGuard)
+  async updateImage(@Req() req, @Body() body) {
+    return await this.authService.updateImage(req.user, body.base)
+  }
 }

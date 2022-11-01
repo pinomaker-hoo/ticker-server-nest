@@ -21,7 +21,13 @@ export class Board extends BaseTimeEntity {
   text: string
 
   @Column({ type: "varchar", nullable: true })
-  imgPath: string
+  imgPath1: string
+
+  @Column({ type: "varchar", nullable: true })
+  imgPath2: string
+
+  @Column({ type: "varchar", nullable: true })
+  imgPath3: string
 
   @ManyToOne((type) => User, (user) => user.board, {
     onDelete: "CASCADE",
