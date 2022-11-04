@@ -7,7 +7,7 @@ import { FoodSaveDto } from "../dto/food.save.dto"
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
-  @Post("/")
+  @Post()
   async saveFood(@Body() body: FoodSaveDto) {
     const response = await this.foodService.saveFood(body)
     return ApiResponse.of({
@@ -17,12 +17,12 @@ export class FoodController {
     })
   }
 
-  @Get("/")
+  @Get()
   async getFoodList() {
-    const response = await this.foodService.findFoodList()
+    const response = await this.foodService.getFoodLiist()
     return ApiResponse.of({
       data: response,
-      message: "success Finf Food List",
+      message: "success Get Food List",
       statusCode: 200,
     })
   }

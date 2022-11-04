@@ -7,6 +7,7 @@ import { FoodController } from "./ui/food.controller"
 @Module({
   imports: [TypeOrmModule.forFeature([FoodRepository])],
   providers: [FoodService],
+  exports: [FoodService],
   controllers: [FoodController],
 })
 export class FoodModule {}

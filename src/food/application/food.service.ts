@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
-import { Food } from "../domain/food.domain"
+import { Food } from "../domain/food.entity"
 import { FoodSaveDto } from "../dto/food.save.dto"
 import { FoodRepository } from "../infrastructure/food.repository"
 
@@ -18,16 +18,16 @@ export class FoodService {
       return await this.foodRepository.save(food)
     } catch (err) {
       console.log(err)
-      throw new HttpException("ERROR", HttpStatus.BAD_REQUEST)
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
     }
   }
 
-  async findFoodList() {
+  async getFoodLiist() {
     try {
       return await this.foodRepository.find()
     } catch (err) {
       console.log(err)
-      throw new HttpException("ERROR", HttpStatus.BAD_REQUEST)
+      throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
     }
   }
 }

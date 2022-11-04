@@ -9,7 +9,7 @@ import { CommentModule } from "./comment/comment.module"
 import { PointModule } from "./point/point.module"
 import { ServeStaticModule } from "@nestjs/serve-static"
 import { join } from "path"
-import { FoodModule } from "./food/food.module"
+import { FoodModule } from "./food/ticket.module"
 
 @Module({
   imports: [
@@ -33,10 +33,10 @@ import { FoodModule } from "./food/food.module"
     TicketUserModule,
     CommentModule,
     PointModule,
+    FoodModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "./source"),
     }),
-    FoodModule,
   ],
   controllers: [],
   providers: [],
