@@ -17,4 +17,7 @@ export class Food extends BaseTimeEntity {
 
   @Column()
   food2: string
+
+  @Column()
+  date: string
 }

@@ -3,4 +3,5 @@ export class FoodSaveDto {
   soup: string
   food1: string
   food2: string
+  date: string
 }

@@ -14,6 +14,7 @@ export class FoodService {
         soup: body.soup,
         food1: body.food1,
         food2: body.food2,
+        date: body.date,
       })
       return await this.foodRepository.save(food)
     } catch (err) {

@@ -42,7 +42,6 @@ export class CommentController {
     const commentList: Comment[] = await this.commentService.getCommentList(
       Number(id)
     )
-
     return ApiResponse.of({
       data: commentList,
       message: "success Get commentList",
