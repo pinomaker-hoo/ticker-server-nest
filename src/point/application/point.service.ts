@@ -13,7 +13,9 @@ export class PointService {
         where: { user },
       })
       const saveMoney = point.money + money
-      return await this.pointRepository.update(point.idx, { money: saveMoney })
+      return await this.pointRepository.update(point.idx, {
+        money: saveMoney,
+      })
     } catch (err) {
       console.log(err)
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST)

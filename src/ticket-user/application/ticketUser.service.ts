@@ -23,7 +23,7 @@ export class TicketUserService {
         ticket,
         used: false,
       })
-      await this.pointService.updatePoint(user, ticket.price)
+      await this.pointService.updatePoint(user, -ticket.price)
       return await this.ticketUserRepository.save(ticketUser)
     } catch (err) {
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
