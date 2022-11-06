@@ -40,7 +40,10 @@ export class TicketUserService {
 
   async findTicketUserList(user: User) {
     try {
-      return await this.ticketUserRepository.find({ where: { user } })
+      return await this.ticketUserRepository.find({
+        where: { user: user.idx },
+        relations: ["user", "ticket"],
+      })
     } catch (err) {
       throw new HttpException("BAD REQUEST", HttpStatus.BAD_REQUEST)
     }

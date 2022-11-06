@@ -1,4 +1,4 @@
 export enum TicketKind {
   KOREAN,
-  WESTERN,
+  CHINA,
 }

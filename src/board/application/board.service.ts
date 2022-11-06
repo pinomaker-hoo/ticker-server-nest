@@ -24,7 +24,6 @@ export class BoardService {
         imgPath2: base[1] || null,
         imgPath3: base[2] || null,
       })
-      console.log(board)
       return await this.boardRepository.save(board)
     } catch (err) {
       console.log(err)

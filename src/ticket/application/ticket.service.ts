@@ -10,8 +10,7 @@ export class TicketService {
 
   async saveTicket(body: TicketSaveDto): Promise<Ticket> {
     try {
-      const kind =
-        body.kind === "korean" ? TicketKind.KOREAN : TicketKind.WESTERN
+      const kind = body.kind === "korean" ? TicketKind.KOREAN : TicketKind.CHINA
       const ticket = await this.ticketRepository.save({
         title: body.title,
         kind: kind,
@@ -34,6 +33,11 @@ export class TicketService {
   }
 
   async findTicket(idx: number) {
-    return await this.ticketRepository.findOne({ where: { idx } })
+    try {
+      return await this.ticketRepository.findOne({ where: { idx } })
+    } catch (err) {
+      console.log(err)
+      throw new HttpException("Bad", HttpStatus.BAD_REQUEST)
+    }
   }
 }

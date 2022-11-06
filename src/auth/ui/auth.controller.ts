@@ -30,7 +30,6 @@ export class AuthController {
   @UseGuards(JwtGuard)
   async findUser(@Req() req) {
     const { user } = req
-    console.log(user)
     return user
   }
 
@@ -61,7 +60,6 @@ export class AuthController {
   async loginLocalUser(@Req() req, @Res() res) {
     const { user } = req
     const token = this.authService.signJwtWithIdx(user.idx)
-    console.log(user)
     res.send({ user, token })
   }
 

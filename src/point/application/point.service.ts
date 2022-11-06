@@ -9,7 +9,6 @@ export class PointService {
 
   async updatePoint(user: User, money: number) {
     try {
-      console.log(user)
       const point: Point = await this.pointRepository.findOne({
         where: { user },
       })
@@ -27,7 +26,6 @@ export class PointService {
         .createQueryBuilder("location")
         .select("SUM(location.something)", "sum")
         .getRawOne()
-      console.log(data)
     } catch (err) {
       console.log(err)
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST)

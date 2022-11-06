@@ -47,7 +47,6 @@ export class AuthService {
 
   async updatePass(user: User, pass: string) {
     try {
-      console.log(user, pass)
       user.pass = pass
       return await this.userRepository.update(user.idx, { pass })
     } catch (err) {
